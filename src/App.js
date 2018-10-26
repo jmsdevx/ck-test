@@ -1,25 +1,55 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react";
+
+import CKEditor from "react-ckeditor-component";
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.updateContent = this.updateContent.bind(this);
+    this.onChange = this.onChange.bind(this);
+    this.state = {
+      content: []
+    };
+  }
+
+  updateContent(newContent) {
+    this.setState({
+      content: newContent
+    });
+  }
+
+  onChange(evt) {
+    // console.log("onChange fired with event info: ", evt);
+    var newContent = evt.editor.getData();
+    this.setState({
+      content: newContent
+    });
+  }
+
+  onBlur(evt) {
+    // console.log("onBlur event called with event info: ", evt);
+  }
+
+  afterPaste(evt) {
+    // console.log("afterPaste event called with event info: ", evt);
+  }
+
   render() {
+    console.log(this.state.content);
+    let display = this.state.content;
+    console.log(display);
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+      <div>
+        <CKEditor
+          activeClass="p10"
+          content={this.state.content}
+          events={{
+            blur: this.onBlur,
+            afterPaste: this.afterPaste,
+            change: this.onChange
+          }}
+        />
+        {this.state.content}
       </div>
     );
   }
